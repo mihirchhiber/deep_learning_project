@@ -78,7 +78,7 @@ Install all the required dependencies
 
 2. Run training code
     ```
-    python3 train.py --no_cuda
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch cnn
     ```
 
     ```
@@ -124,7 +124,7 @@ Install all the required dependencies
 
 2. Run evaluation code
     ```
-    python3 evaluate.py --no_cuda
+    python3 evaluate.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch cnn
     ```
     
     ```
