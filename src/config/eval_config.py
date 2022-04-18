@@ -6,7 +6,7 @@ from easydict import EasyDict as edict
 def parse_eval_configs():
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--working_dir', type=str, default='/Users/dylantan/Desktop/deep_learning_project',
+    parser.add_argument('--working_dir', type=str, default='deep_learning_project',
                         help='The ROOT working directory')
 
     ####################################################################

@@ -7,13 +7,13 @@ def create_model(configs):
 
     # Create model based on architecture name
     if configs.arch == "cnn":
-        print(f"Using CNN")
+        print(f"------Using CNN------")
         model = CustomCNN()
     elif configs.arch == "incp":
-        print(f"Using InceptionModule")
+        print(f"------Using InceptionModule------")
         model = InceptionModule()
     elif configs.arch == "resnet":
-        print(f"Using ResNet")
+        print(f"------Using ResNet------")
         model = ResNet()
     else:
         assert False, "Undefined Model Backbone"
