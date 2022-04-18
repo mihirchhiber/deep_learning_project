@@ -13,7 +13,7 @@ def parse_eval_configs():
     ###################     Model configs     ##########################
     ####################################################################
     parser.add_argument('-a', '--arch', type=str, default='cnn',
-                            help='The architecture of model')
+                            help='The architecture of model: cnn, incp, resnet')
     parser.add_argument('--test_size', type=float, default=0.2,
                         help='Train test split ')
     parser.add_argument('--num_workers', type=int, default=0,

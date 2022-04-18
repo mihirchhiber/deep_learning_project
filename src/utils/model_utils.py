@@ -1,7 +1,8 @@
 from models.CustomCNN import CustomCNN
 from models.InceptionModule import InceptionModule
-from models.ResNet import ResNet
+from models.ResNet import ResNet, ResidualBlock
 import torch.optim as optim
+import sys
 
 def create_model(configs):
 
@@ -14,7 +15,7 @@ def create_model(configs):
         model = InceptionModule()
     elif configs.arch == "resnet":
         print(f"------Using ResNet------")
-        model = ResNet()
+        model = ResNet(ResidualBlock, [2, 2, 2])
     else:
         assert False, "Undefined Model Backbone"
 
