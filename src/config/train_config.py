@@ -15,12 +15,7 @@ def parse_train_configs():
     parser.add_argument('-a', '--arch', type=str, default='cnn',
                             help='The architecture of model')
     parser.add_argument('--checkpoints_path', type=str, default=None,
-                            help='The path of the pretrained checkpoint')
-
-    ####################################################################
-    ##############     Dataloader and Running configs     ##############
-    ####################################################################
-    
+                            help='The path of the pretrained checkpoint')    
     parser.add_argument('--test_size', type=float, default=0.2,
                         help='Train test split ')
     parser.add_argument('--num_workers', type=int, default=0,
@@ -31,11 +26,6 @@ def parse_train_configs():
                             help='Batch size')
     parser.add_argument('--test_batch_size', type=int, default=8,
                             help='Batch size')
-
-    # ####################################################################
-    # ##############     Training strategy            ####################
-    # ####################################################################
-
     parser.add_argument('--num_epochs', type=int, default=25, 
                         help='Number of epochs to train')
     parser.add_argument('--lr', type=float, default=0.001, 
