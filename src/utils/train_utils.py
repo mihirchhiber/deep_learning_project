@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import time
 import copy
+import torch
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
+def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer, scheduler, num_epochs=25):
     losses = {'train':[], 'val':[]}
     accuracies = {'train':[], 'val':[]}
-    every_n_epoch = 5
 
     since = time.time()
 
@@ -13,7 +13,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
     best_acc = 0.0
 
     for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
+        print('Epoch {}/{}'.format(epoch+1, num_epochs))
         print('-' * 10)
 
         # Each epoch has a training and validation phase
@@ -29,8 +29,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             # Iterate over data.
             for inputs, labels in dataloaders[phase]:
                 # inputs = inputs.type(torch.DoubleTensor)
-                inputs = inputs.to(device)
-                labels = labels.to(device)
+                inputs = inputs.to(device=configs.device)
+                labels = labels.to(device=configs.device)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
@@ -59,9 +59,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
             
-            if epoch%every_n_epoch == 0:
-              losses[phase] += [epoch_loss]
-              accuracies[phase] += [epoch_acc.cpu().detach().numpy()]
+            losses[phase] += [epoch_loss]
+            accuracies[phase] += [epoch_acc.cpu().detach().numpy()]
 
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
@@ -77,6 +76,10 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
 
     # load best model weights
     model.load_state_dict(best_model_wts)
+
+    # save model weights
+    torch.save(model.state_dict(),f"{configs.checkpoints_dir}/{configs.arch}_weights.pth")
+
     return model, losses, accuracies
 
 def plot_performance(metric, values):

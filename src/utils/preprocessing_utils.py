@@ -70,7 +70,7 @@ def create_df(configs, csv):
 
     for i in range(len(df)):
         temp = df['filename'][i].split(".")
-        df['filename'][i] = "data/images_original/" + temp[0] + "/" + temp[0] + temp[1] + ".png"
+        df['filename'][i] = configs.dataset_dir + "/images_original/" + temp[0] + "/" + temp[0] + temp[1] + ".png"
     
     return df
 
@@ -100,10 +100,10 @@ def create_dataloaders(configs, df):
                     'val' : DataLoader(val_transformed_dataset, batch_size=configs.val_batch_size,
                                 shuffle=True, num_workers=0)}
 
-    return dataloaders
+    return dataloaders, dataset_sizes
 
 if __name__ == "__main__":
     configs = parse_train_configs()
     df = create_df(configs, "features_30_sec.csv")
     print(df)
-    dataloaders = create_dataloaders(configs, df)
+    dataloaders, dataset_sizes = create_dataloaders(configs, df)

@@ -31,10 +31,7 @@ def parse_train_configs():
                             help='Batch size')
     parser.add_argument('--test_batch_size', type=int, default=8,
                             help='Batch size')
-    parser.add_argument('--print_freq', type=int, default=50,
-                            help='Print frequency (default: 50)')
-    parser.add_argument('--checkpoint_freq', type=int, default=1,
-                            help='Frequency of saving checkpoints (default: 1)')
+
     # ####################################################################
     # ##############     Training strategy            ####################
     # ####################################################################
@@ -53,14 +50,6 @@ def parse_train_configs():
                         help='Step size')
     parser.add_argument('--no_cuda', action='store_true',
                         help='If true, cuda is not used.')
-    
-    # ####################################################################
-    # ##############     Evaluation configurations     ###################
-    # ####################################################################
-    # parser.add_argument('--evaluate', action='store_true',
-    #                     help='only evaluate the model, not training')
-    # parser.add_argument('--resume_path', type=str, default=None, metavar='PATH',
-    #                     help='the path of the resumed checkpoint')
 
     configs = edict(vars(parser.parse_args()))
 

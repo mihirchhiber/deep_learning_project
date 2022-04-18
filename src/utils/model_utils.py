@@ -1,4 +1,6 @@
-from models import CustomCNN, InceptionModule, ResNet
+from models.CustomCNN import CustomCNN
+from models.InceptionModule import InceptionModule
+from models.ResNet import ResNet
 import torch.optim as optim
 
 def create_model(configs):

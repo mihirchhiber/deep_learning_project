@@ -1,6 +1,10 @@
-def eval_model(model, criterion, optimizer, scheduler):
+import torch
+from sklearn.metrics import roc_curve, auc, roc_auc_score, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
 
-    model.eval()   # Set model to evaluate mode
+def eval_model(model, dataloaders, configs):
+
+    model.eval() # Set model to evaluate mode
 
     t_output = []
     t_pred = []
@@ -10,22 +14,18 @@ def eval_model(model, criterion, optimizer, scheduler):
     i = 1
     for inputs, labels in dataloaders['test']:
         
-        inputs = inputs.to(device)
-        labels = labels.to(device)
+        inputs = inputs.to(device=configs.device)
+        labels = labels.to(device=configs.device)
         y_test.append(labels)
-
-        # zero the parameter gradients
-        optimizer.zero_grad()
 
         # forward
         # track history if only in train
         with torch.set_grad_enabled(True):
             outputs = model(inputs.float())
             _, preds = torch.max(outputs, 1)
-            loss = criterion(outputs, labels)
             t_output.append(outputs)
             t_pred.append(preds)
-            temp1, temp2 = outputs.topk(5)
+            _, temp2 = outputs.topk(5)
             top_k.append(temp2)
 
     y_test = torch.cat(y_test).cpu().detach().numpy() 
