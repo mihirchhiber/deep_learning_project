@@ -5,7 +5,7 @@ import torch
 from tqdm import tqdm
 from time import sleep
 
-def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer, scheduler, num_epochs, batch_size):
+def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer, scheduler, num_epochs, patience=5):
     losses = {'train':[], 'val':[]}
     accuracies = {'train':[], 'val':[]}
 
@@ -13,6 +13,7 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
 
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
+    stop_trigger = 0
 
     for epoch in range(num_epochs):
         # print('Epoch {}/{}'.format(epoch+1, num_epochs))
@@ -33,9 +34,10 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
                     # # Iterate over data.
                     # for inputs, labels in dataloaders[phase]:
                     if phase == 'train':
-                        tepoch.set_description(f"Epoch {epoch}")
+                        tepoch.set_description(f"Epoch {epoch+1}")
                     elif phase == 'val':
-                        tepoch.set_description(f"Val {epoch}")
+                        tepoch.set_description(f"Val {epoch+1}")
+
                     inputs = inputs.type(torch.DoubleTensor)
                     inputs = inputs.to(device=configs.device)
                     labels = labels.to(device=configs.device)
@@ -74,9 +76,19 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
             accuracies[phase] += [epoch_acc.cpu().detach().numpy()]
 
             # deep copy the model
-            if phase == 'val' and epoch_acc > best_acc:
-                best_acc = epoch_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
+            if phase == 'val' and epoch_acc >= best_acc:
+              best_acc = epoch_acc
+              best_model_wts = copy.deepcopy(model.state_dict())
+              stop_trigger = 0 # Reset count
+
+            elif phase == 'val' and epoch_acc < best_acc:
+              stop_trigger += 1
+              print(epoch_acc, best_acc)
+              print("Triggered! --> ", stop_trigger , "/", patience)
+        
+        if stop_trigger == patience:
+            print("Early Stopped!!!")
+            break
 
         print()
 

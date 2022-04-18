@@ -6,7 +6,7 @@ from easydict import EasyDict as edict
 def parse_train_configs():
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--working_dir', type=str, default='/Users/kanashimahatsumi/Desktop/Term 7/Deep Learning/Project/deep_learning_project',
+    parser.add_argument('--working_dir', type=str, default='deep_learning_project',
                         help='The ROOT working directory')
 
     ####################################################################
@@ -38,6 +38,8 @@ def parse_train_configs():
                         help='Type of optimizer: sgd or adam')
     parser.add_argument('--step_size', type=int, default=7,
                         help='Step size')
+    parser.add_argument('--patience', type=int, default=5,
+                        help='Patience for early stopping')
     parser.add_argument('--no_cuda', action='store_true',
                         help='If true, cuda is not used.')
 
