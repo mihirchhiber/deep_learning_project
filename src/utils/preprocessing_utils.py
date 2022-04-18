@@ -5,11 +5,11 @@ import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
 from torchvision import transforms
+from torch.utils.data import Dataset, DataLoader
 
 sys.path.append('../')
 
 from config.train_config import parse_train_configs
-from torch.utils.data import Dataset, DataLoader
 
 class GenreDataset(Dataset):
     """Genre dataset."""
