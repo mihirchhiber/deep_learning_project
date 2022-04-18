@@ -2,8 +2,10 @@ import matplotlib.pyplot as plt
 import time
 import copy
 import torch
+from tqdm import tqdm
+from time import sleep
 
-def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer, scheduler, num_epochs=25):
+def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer, scheduler, num_epochs, batch_size):
     losses = {'train':[], 'val':[]}
     accuracies = {'train':[], 'val':[]}
 
@@ -13,8 +15,8 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
     best_acc = 0.0
 
     for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch+1, num_epochs))
-        print('-' * 10)
+        # print('Epoch {}/{}'.format(epoch+1, num_epochs))
+        # print('-' * 10)
 
         # Each epoch has a training and validation phase
         for phase in ['train', 'val']:
@@ -26,30 +28,39 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
             running_loss = 0.0
             running_corrects = 0
 
-            # Iterate over data.
-            for inputs, labels in dataloaders[phase]:
-                # inputs = inputs.type(torch.DoubleTensor)
-                inputs = inputs.to(device=configs.device)
-                labels = labels.to(device=configs.device)
-
-                # zero the parameter gradients
-                optimizer.zero_grad()
-
-                # forward
-                # track history if only in train
-                with torch.set_grad_enabled(phase == 'train'):
-                    outputs = model(inputs.float())
-                    _, preds = torch.max(outputs, 1)
-                    loss = criterion(outputs, labels)
-
-                    # backward + optimize only if in training phase
+            with tqdm(dataloaders[phase], unit="batch") as tepoch:
+                for inputs, labels in tepoch:
+                    # # Iterate over data.
+                    # for inputs, labels in dataloaders[phase]:
                     if phase == 'train':
-                        loss.backward()
-                        optimizer.step()
+                        tepoch.set_description(f"Epoch {epoch}")
+                    elif phase == 'val':
+                        tepoch.set_description(f"Val {epoch}")
+                    inputs = inputs.type(torch.DoubleTensor)
+                    inputs = inputs.to(device=configs.device)
+                    labels = labels.to(device=configs.device)
 
-                # statistics
-                running_loss += loss.item() * inputs.size(0)
-                running_corrects += torch.sum(preds == labels.data)
+                    # zero the parameter gradients
+                    optimizer.zero_grad()
+
+                    # forward
+                    # track history if only in train
+                    with torch.set_grad_enabled(phase == 'train'):
+                        outputs = model(inputs.float())
+                        _, preds = torch.max(outputs, 1)
+                        loss = criterion(outputs, labels)
+
+                        # backward + optimize only if in training phase
+                        if phase == 'train':
+                            loss.backward()
+                            optimizer.step()
+
+                    # statistics
+                    running_loss += loss.item() * inputs.size(0)
+                    running_corrects += torch.sum(preds == labels.data)
+                    
+                    sleep(0.1)
+
             if phase == 'train':
                 scheduler.step()
 
@@ -57,7 +68,7 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
             epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-                phase, epoch_loss, epoch_acc))
+                phase.capitalize(), epoch_loss, epoch_acc))
             
             losses[phase] += [epoch_loss]
             accuracies[phase] += [epoch_acc.cpu().detach().numpy()]

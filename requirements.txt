@@ -4,3 +4,6 @@ torch
 numpy
 torchvision
 opencv-python
+tqdm
+time
+matplotlib
