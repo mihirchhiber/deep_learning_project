@@ -3,7 +3,7 @@ import argparse
 import torch
 from easydict import EasyDict as edict
 
-def parse_train_configs():
+def parse_eval_configs():
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--working_dir', type=str, default='/Users/dylantan/Desktop/deep_learning_project',
@@ -14,13 +14,6 @@ def parse_train_configs():
     ####################################################################
     parser.add_argument('-a', '--arch', type=str, default='cnn',
                             help='The architecture of model')
-    parser.add_argument('--checkpoints_path', type=str, default=None,
-                            help='The path of the pretrained checkpoint')
-
-    ####################################################################
-    ##############     Dataloader and Running configs     ##############
-    ####################################################################
-    
     parser.add_argument('--test_size', type=float, default=0.2,
                         help='Train test split ')
     parser.add_argument('--num_workers', type=int, default=0,
@@ -31,36 +24,8 @@ def parse_train_configs():
                             help='Batch size')
     parser.add_argument('--test_batch_size', type=int, default=8,
                             help='Batch size')
-    parser.add_argument('--print_freq', type=int, default=50,
-                            help='Print frequency (default: 50)')
-    parser.add_argument('--checkpoint_freq', type=int, default=1,
-                            help='Frequency of saving checkpoints (default: 1)')
-    # ####################################################################
-    # ##############     Training strategy            ####################
-    # ####################################################################
-
-    parser.add_argument('--num_epochs', type=int, default=25, 
-                        help='Number of epochs to train')
-    parser.add_argument('--lr', type=float, default=0.001, 
-                        help='Learning rate')
-    parser.add_argument('--momentum', type=float, default=0.9, 
-                        help='Momentum')
-    parser.add_argument('--gamma', type=float, default=0.1,
-                        help='Gamma')
-    parser.add_argument('--optimizer_type', type=str, default='sgd',
-                        help='Type of optimizer: sgd or adam')
-    parser.add_argument('--step_size', type=int, default=7,
-                        help='Step size')
     parser.add_argument('--no_cuda', action='store_true',
                         help='If true, cuda is not used.')
-    
-    # ####################################################################
-    # ##############     Evaluation configurations     ###################
-    # ####################################################################
-    # parser.add_argument('--evaluate', action='store_true',
-    #                     help='only evaluate the model, not training')
-    # parser.add_argument('--resume_path', type=str, default=None, metavar='PATH',
-    #                     help='the path of the resumed checkpoint')
 
     configs = edict(vars(parser.parse_args()))
 

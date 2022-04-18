@@ -1,5 +1,5 @@
 import torch
-from sklearn.metrics import roc_curve, auc, roc_auc_score, classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 
 def eval_model(model, dataloaders, configs):
@@ -18,9 +18,8 @@ def eval_model(model, dataloaders, configs):
         labels = labels.to(device=configs.device)
         y_test.append(labels)
 
-        # forward
         # track history if only in train
-        with torch.set_grad_enabled(True):
+        with torch.no_grad():
             outputs = model(inputs.float())
             _, preds = torch.max(outputs, 1)
             t_output.append(outputs)
@@ -30,7 +29,7 @@ def eval_model(model, dataloaders, configs):
 
     y_test = torch.cat(y_test).cpu().detach().numpy() 
     y_test_num = torch.cat(t_pred).cpu().detach().numpy() 
-    y_pred = torch.cat(top_k).cpu().detach().numpy() 
+    # y_pred = torch.cat(top_k).cpu().detach().numpy() 
 
     print('\nConfusion Matrix')
     conf_mt = confusion_matrix(y_test_num, y_test)
