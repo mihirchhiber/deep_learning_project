@@ -1,0 +1,6 @@
+pandas
+sklearn
+torch
+numpy
+torchvision
+opencv-python
