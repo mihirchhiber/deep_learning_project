@@ -62,7 +62,7 @@ def create_df(configs, csv):
 
     class_name = {}
     n = 0
-    for i in set(df['label']):
+    for i in df['label'].unique():
         class_name[i] = n
         n+=1
 

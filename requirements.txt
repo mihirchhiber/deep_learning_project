@@ -7,3 +7,4 @@ opencv-python
 tqdm
 time
 matplotlib
+numba
