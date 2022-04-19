@@ -116,6 +116,36 @@ Install all the required dependencies
     --no_cuda             If true, cuda is not used.
     ```
 
+    For CNN approach:
+    ```
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch cnn
+    ```
+    For InceptionModule approach:
+    ```
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch incp
+    ```
+    For ResNet approach:
+    ```
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch resnet
+    ```
+    For RecurrentNet approach:
+
+    (RNN)
+    ```
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch rnn
+    ```
+    
+    (LSTM)
+    ```
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch lstm
+    ```
+    
+    (GRU)
+    ```
+    python3 train.py --no_cuda --working_dir <ABS PATH>/deep_learning_project --arch gru
+    ```
+
+
 ### 2.2 Evaluation
 1. Change directory to `/src`
     ```
