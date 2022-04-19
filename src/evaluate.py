@@ -14,7 +14,8 @@ def main():
     dataloaders, _ = create_dataloaders(configs, df)
 
     model = create_model(configs).to(device=configs.device)
-    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/cnn_weights.pth"))
+    print(f"Weights path: {configs.checkpoints_dir}/{configs.arch}_weights.pth")
+    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights.pth"))
 
     eval_model(model, dataloaders, configs)
 

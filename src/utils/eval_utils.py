@@ -14,7 +14,12 @@ def eval_model(model, dataloaders, configs):
     i = 1
     for inputs, labels in dataloaders['test']:
         
-        inputs = inputs.to(device=configs.device)
+        if configs.arch in ['rnn', 'gru', 'lstm']:
+            # Reshape inputs to (batch_size, seq_length, input_size)
+            inputs = inputs.reshape(-1, 339, 221).to(device=configs.device)
+        else:
+            inputs = inputs.to(device=configs.device)
+
         labels = labels.to(device=configs.device)
         y_test.append(labels)
 
