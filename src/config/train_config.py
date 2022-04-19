@@ -13,7 +13,7 @@ def parse_train_configs():
     ###################     Model configs     ##########################
     ####################################################################
     parser.add_argument('-a', '--arch', type=str, default='cnn',
-                            help='The architecture of model: cnn, incp, resnet')
+                            help='The architecture of model: cnn, incp, resnet, rnn, gru, lstm')
     parser.add_argument('--checkpoints_path', type=str, default=None,
                             help='The path of the pretrained checkpoint')    
     parser.add_argument('--test_size', type=float, default=0.2,

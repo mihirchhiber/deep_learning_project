@@ -21,7 +21,8 @@ def main():
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=configs.step_size, gamma=configs.gamma)
 
     model, losses, accuracies = train_model(model, dataloaders, dataset_sizes, configs,
-                                    criterion, optimizer, exp_lr_scheduler, num_epochs=configs.num_epochs, patience=configs.patience)    
+                                    criterion, optimizer, exp_lr_scheduler, num_epochs=configs.num_epochs,
+                                    patience=configs.patience)    
 
     plot_performance('Accuracy', accuracies)
     plot_performance('Loss', losses)

@@ -31,23 +31,29 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
 
             with tqdm(dataloaders[phase], unit="batch") as tepoch:
                 for inputs, labels in tepoch:
-                    # # Iterate over data.
+                    # Iterate over data.
                     # for inputs, labels in dataloaders[phase]:
                     if phase == 'train':
                         tepoch.set_description(f"Epoch {epoch+1}")
                     elif phase == 'val':
                         tepoch.set_description(f"Val {epoch+1}")
 
-                    inputs = inputs.type(torch.DoubleTensor)
-                    inputs = inputs.to(device=configs.device)
-                    labels = labels.to(device=configs.device)
-
-                    # zero the parameter gradients
-                    optimizer.zero_grad()
-
                     # forward
                     # track history if only in train
                     with torch.set_grad_enabled(phase == 'train'):
+
+                        if configs.arch in ['rnn', 'gru', 'lstm']:
+                            # Reshape inputs to (batch_size, seq_length, input_size)
+                            inputs = inputs.reshape(-1, 339, 221).to(device=configs.device)
+                        else:
+                            inputs = inputs.type(torch.DoubleTensor)
+                            inputs = inputs.to(device=configs.device)
+
+                        labels = labels.to(device=configs.device)
+
+                        # zero the parameter gradients
+                        optimizer.zero_grad()
+
                         outputs = model(inputs.float())
                         _, preds = torch.max(outputs, 1)
                         loss = criterion(outputs, labels)

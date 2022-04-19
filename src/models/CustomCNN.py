@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class CustomCNN(nn.Module):
-    def __init__(self, num_filters=(16, 32, 64, 128)):
+    def __init__(self, configs, num_filters=(16, 32, 64, 128)):
         super().__init__()
         self.num_filters = num_filters
         fl1, fl2, fl3, fl4 = self.num_filters
