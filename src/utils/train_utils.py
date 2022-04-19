@@ -103,11 +103,11 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
         time_elapsed // 60, time_elapsed % 60))
     print('Best val Acc: {:4f}'.format(best_acc))
 
+    # save model weights
+    torch.save(best_model_wts,f"{configs.checkpoints_dir}/{configs.arch}_weights.pth")
+
     # load best model weights
     model.load_state_dict(best_model_wts)
-
-    # save model weights
-    torch.save(model.state_dict(),f"{configs.checkpoints_dir}/{configs.arch}_weights.pth")
 
     return model, losses, accuracies
 
