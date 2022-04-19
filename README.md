@@ -179,3 +179,13 @@ Install all the required dependencies
                             Batch size
     --no_cuda             If true, cuda is not used.
     ```
+
+### 2.3 Evaluation
+1. Change directory to `/src`
+    ```
+    cd src
+    ```
+2. Run inference code
+    ```
+    python3 inference.py --no_cuda --working_dir <ABS PATH>deep_learning_project --arch cnn
+    ```
