@@ -70,6 +70,9 @@ Install all the required dependencies
 1. Open `config/train_configs` and `config/eval_configs`
 2. Change the default `--working_dir` in `line 9` to your own **absolute path**  or specify it during training/evaluation
 
+### 1.4 Model Weights Guide
+    <TO DO>
+
 ## 2. How to run
 ### 2.1 Training
 1. Change directory to `/src`
@@ -181,7 +184,7 @@ Install all the required dependencies
     --no_cuda             If true, cuda is not used.
     ```
 
-### 2.3 Evaluation
+### 2.3 Inference
 1. Change directory to `/src`
     ```
     cd src
