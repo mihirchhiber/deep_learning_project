@@ -4,8 +4,8 @@ import sys
 from config.eval_config import parse_eval_configs
 
 from utils.model_utils import create_model
-from utils.inference_utils import audio_to_spec, inference, upload_spec
-from utils.preprocessing_utils import create_df, create_dataloaders
+from utils.inference_utils import audio_to_spec, inference, upload_spec, songRecomendation
+from utils.preprocessing_utils import create_df
 
 def main():
     configs = parse_eval_configs()
@@ -21,6 +21,15 @@ def main():
     inputs = upload_spec(f"{configs.dataset_dir}/prediction/{song_spec}")
 
     genre = inference(model, inputs, configs)
+
+    with open('checkpoints/song_embeddings/song_embed.pkl', 'rb') as f:
+        song_embed = pickle.load(f)
+    with open('checkpoints/song_embeddings/song_name.pkl', 'rb') as f:
+        song_name = pickle.load(f)
+
+    song_rec = songRecomendation(song_name, song_embed, song_spec, k=5)
+
+
 
 if __name__ == "__main__":
     try:

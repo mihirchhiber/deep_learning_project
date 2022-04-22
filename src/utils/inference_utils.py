@@ -93,3 +93,13 @@ def audio_to_spec(path, configs):
     # plt.ylabel('Frequency', fontdict=dict(size=15))
     # plt.show()
     return f"{songname}_mspec.png"
+
+def songRecomendation(song_name, song_embed, new_song, k=5):
+    ls = np.dot(song_embed,new_song/np.linalg.norm(new_song))
+    ls = sorted(range(len(ls)), key=lambda i: ls[i])[-k:]
+
+    print("The suggested songs are : ")
+    ls = [song_name[i] for i in ls]
+    for i in range(len(ls)):
+        print(str(i) + ') ' + ls[i])
+    return ls

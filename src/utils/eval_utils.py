@@ -1,6 +1,8 @@
 import torch
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
+from models.CustomCNN import CustomCNN
+from inference_utils import songRecomendation
 
 def eval_model(model, dataloaders, configs):
 
@@ -43,3 +45,22 @@ def eval_model(model, dataloaders, configs):
     plt.show()
     print('\nClassification Report')
     print(classification_report(y_actual, y_test, zero_division=0))
+
+def eval_embed(song_name, song_embed):
+    score = 0
+    dc= {}
+    dc_count = {}
+    for name, embed in zip(song_name, song_embed):
+        ans = songRecomendation(song_name, song_embed, embed)
+        ans = [i[:-5] for i in ans]
+        name = name[:-5]
+        if dc.get(name,False) == False:
+            dc[name] = 0
+            dc_count[name] = 0
+        dc_count[name] +=1
+        dc[name] += (ans.count(name)-1)/5
+        score += ans.count(name)/5
+    for i in dc.keys():
+        print(i,dc[i]/dc_count[i])
+    score = score/(len(song_name))
+    print("average score :",score)
