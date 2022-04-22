@@ -3,8 +3,7 @@
 ## 1. Getting Started
 ### 1.1 Dataset preparation
 1. Download the [GTZAN Dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) 
-2. Remove `jazz.00055...` row from the `features_30_sec.csv` file.
-3. Directory structure should be as such:
+2. Directory structure should be as such:
 
     ```
     .
