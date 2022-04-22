@@ -59,6 +59,9 @@ class PreProcessing(object):
 def create_df(configs, csv):
     df = pd.read_csv(f"{configs.dataset_dir}/{csv}")
     df = df[['filename','label']]
+    df = df[df['filename'] != "jazz.00054.wav"]
+    df = df.reset_index()
+    df.pop('index')
 
     class_name = {}
     n = 0
