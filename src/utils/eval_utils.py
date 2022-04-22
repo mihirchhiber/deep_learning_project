@@ -51,7 +51,7 @@ def eval_embed(song_name, song_embed):
     dc= {}
     dc_count = {}
     for name, embed in zip(song_name, song_embed):
-        ans = songRecomendation(song_name, song_embed, embed)
+        ans = songRecomendation(song_name, song_embed, embed, k=6)
         ans = [i[:-5] for i in ans]
         name = name[:-5]
         if dc.get(name,False) == False:
