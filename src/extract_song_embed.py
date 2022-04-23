@@ -14,6 +14,8 @@ def main():
     dataloaders, _ = create_dataloaders(configs, df)
 
     model = create_model(configs).to(device=configs.device)
+    
+    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/cnn_weights.pth"))
 
     extract_song_embed_from_model(model, dataloaders, configs)
 
