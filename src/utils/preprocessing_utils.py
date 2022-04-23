@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
+from sklearn.preprocessing import MinMaxScaler
 
 sys.path.append('../')
 
@@ -46,15 +47,20 @@ class GenreDataset(Dataset):
 class PreProcessing(object):
 
     def __init__(self):
-        pass
+        self.scaler = MinMaxScaler()
 
     def __call__(self, sample):
-        image, turtle_id = sample['image'], sample['label']
+        image, label = sample['image'], sample['label']
         h, w = image.shape[:2]
-        
+
         ### ADD PREPROCESSING CODE HERE
+
+        # Normalize if is RNN <Testing out>
+        # image_2d = image[:,:,-1]
+        # image_2d = self.scaler.fit_transform(image_2d)
+        # image = np.expand_dims(image_2d, axis=2)
         
-        return [torch.Tensor(image.transpose(2,0,1)), turtle_id]
+        return [torch.Tensor(image.transpose(2,0,1)), label]
 
 def create_df(configs, csv):
     df = pd.read_csv(f"{configs.dataset_dir}/{csv}")
@@ -82,7 +88,7 @@ def create_dataloaders(configs, df):
     test, val = train_test_split(test, test_size=0.50, random_state=42, stratify = test['label'])
     dataset_sizes = {'train': len(train), 'test': len(test), 'val': len(val)}
     print(f"Dataset sizes: {dataset_sizes}")
-    
+
     train_transformed_dataset = GenreDataset(csv_file=train,
                                                transform=transforms.Compose([
                                                PreProcessing()

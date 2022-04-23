@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import time
 import copy
 import torch
 from tqdm import tqdm
 from time import sleep
+import numpy as np
+import os
 
 def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer, scheduler, num_epochs, patience=5):
     losses = {'train':[], 'val':[]}
@@ -112,10 +115,15 @@ def train_model(model, dataloaders, dataset_sizes, configs, criterion, optimizer
 
     return model, losses, accuracies
 
-def plot_performance(metric, values):
+def plot_performance(metric, values, configs):
     plt.plot(values['train'])
     plt.plot(values['val'])
     plt.xlabel("epochs")
     plt.ylabel(metric)
     plt.legend(values.keys())
+
+    if not os.path.isdir(f"{configs.working_dir}/plots/{configs.arch}"):
+        os.makedirs(f"{configs.working_dir}/plots/{configs.arch}")
+
+    plt.savefig(f"{configs.working_dir}/plots/{configs.arch}/{metric}.png")
     plt.show()
