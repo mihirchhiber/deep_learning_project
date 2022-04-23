@@ -94,8 +94,17 @@ def audio_to_spec(path, configs):
     # plt.show()
     return f"{songname}_mspec.png"
 
-def songRecomendation(song_name, song_embed, new_song, k=5):
-    ls = np.dot(song_embed,new_song/np.linalg.norm(new_song))
+def songRecomendation(song_name, song_embed, new_song, model, configs, k=5):
+
+    model.eval() # Set model to evaluate mode
+
+    model = torch.nn.Sequential(*(list(model.modules())[1:])[0]) # strips off last linear layer and dropout layer
+
+    new_song = new_song.to(configs.device)
+
+    output = model(new_song.float())
+
+    ls = np.dot(song_embed,output/np.linalg.norm(output))
     ls = sorted(range(len(ls)), key=lambda i: ls[i])[-k:]
 
     print("The suggested songs are : ")
