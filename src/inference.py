@@ -1,4 +1,6 @@
 import torch
+import numpy
+import pickle
 import sys
 
 from config.eval_config import parse_eval_configs
@@ -19,21 +21,21 @@ def main():
 
     path = f"{configs.dataset_dir}/prediction_sounds/jazz.00085.wav"
     song_spec = audio_to_spec(path, configs)
-    inputs = upload_spec(f"{configs.dataset_dir}/prediction/{song_spec}")
+    inputs = upload_spec(f"{configs.dataset_dir}/prediction_mspec/{song_spec}")
 
     genre = inference(model, inputs, configs)
 
     configs = se_config.parse_eval_configs()
 
-    model = create_model(configs).to(device=configs.device)
-    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights.pth"))
+    # model = create_model(configs).to(device=configs.device)
+    # model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights.pth"))
 
-    with open('checkpoints/song_embeddings/song_embed.pkl', 'rb') as f:
+    with open(f'{configs.checkpoints_dir}/song_embeddings/song_embed.pkl', 'rb') as f:
         song_embed = pickle.load(f)
-    with open('checkpoints/song_embeddings/song_name.pkl', 'rb') as f:
+    with open(f'{configs.checkpoints_dir}/song_embeddings/song_name.pkl', 'rb') as f:
         song_name = pickle.load(f)
 
-    song_rec = songRecomendation(song_name, song_embed, song_spec, model, configs, k=5)
+    song_rec = songRecomendation(song_name, song_embed, inputs, model, configs, k=5)
 
 
 

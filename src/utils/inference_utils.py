@@ -49,7 +49,7 @@ def upload_spec(path):
 
     inputs = np.transpose(image, (2,0,1))
     inputs = np.expand_dims(inputs, axis=0)
-    inputs = torch.from_numpy(inputs)
+    inputs = torch.Tensor(inputs)
     
     return inputs
 
@@ -86,7 +86,7 @@ def audio_to_spec(path, configs):
     librosa.display.specshow(power_to_db, sr=sr, x_axis='time', y_axis='mel', cmap='magma')
 
     plt.axis('off')
-    plt.savefig(f"{configs.dataset_dir}/prediction/{songname}_mspec.png", bbox_inches='tight', transparent=True, pad_inches=0)
+    plt.savefig(f"{configs.dataset_dir}/prediction_mspec/{songname}_mspec.png", bbox_inches='tight', transparent=True, pad_inches=0)
     # plt.colorbar(label='dB')
     # plt.title('Mel-Spectrogram (dB)', fontdict=dict(size=18))
     # plt.xlabel('Time', fontdict=dict(size=15))
@@ -104,7 +104,7 @@ def songRecomendation(song_name, song_embed, new_song, model, configs, k=5):
 
     output = model(new_song.float())
 
-    ls = np.dot(song_embed,output/np.linalg.norm(output))
+    ls = np.dot(song_embed, output/np.linalg.norm(output)) #normalize query and matrix mult
     ls = sorted(range(len(ls)), key=lambda i: ls[i])[-k:]
 
     print("The suggested songs are : ")
