@@ -1,15 +1,24 @@
 # Deep Learning Project: Song Recommendation System
 
-## 1. Getting Started
-### 1.1 Dataset preparation
-1. Download the [GTZAN Dataset preprocessed](https://drive.google.com/file/d/1rUuelL3TxKNrF_5j9gV6Z4fgb0cIxcWD/view?usp=sharing) 
-2. Visualize an individual audio file
+In this project, we are motivated by shazam’s music recommendation system. The goal of
+this project is to output the genre and recommend a list of songs using the input music
+provided by the users. The team attempted various ways to improve the model, such as
+experimenting with different model designs and fine tuning hyperparameters such as the
+optimizers and learning rate. To find out more, the details can be found in the report.
+
+![Inference](img/inference.gif)
 
 -Spectral Centroid:
 ![Test Image 1](https://github.com/mihirchhiber/deep_learning_project/blob/main/img/spectral%20centroid%20of%20blue1.png)
 
 -Sound Wave:
 ![Test Image 2](https://github.com/mihirchhiber/deep_learning_project/blob/main/img/sound%20wave%20of%20blue1.png)
+
+
+## 1. Getting Started
+### 1.1 Dataset preparation
+1. Download the [GTZAN Dataset preprocessed](https://drive.google.com/file/d/1rUuelL3TxKNrF_5j9gV6Z4fgb0cIxcWD/view?usp=sharing) 
+2. Visualize an individual audio file
 3. Directory structure should be as such:
 
     ```
@@ -93,9 +102,6 @@ Install all the required dependencies
 ### 1.3 Change working directory path
 1. Open `config/train_configs` and `config/eval_configs`
 2. Change the default `--working_dir` in `line 9` to your own **absolute path**  or specify it during training/evaluation
-
-### 1.4 Model Weights Guide
-    <TO DO>
 
 ## 2. How to run
 ### 2.1 Training model
@@ -218,6 +224,7 @@ Install all the required dependencies
     python3 extract_song_embed.py --no_cuda --working_dir <ABS PATH>/deep_learning_project
     ```
     
+    ```
     $ python3 extract_song_embed.py --help
     usage: train.py [-h] [--working_dir WORKING_DIR] [--test_size TEST_SIZE] [--num_workers NUM_WORKERS]
                 [--trg_batch_size TRG_BATCH_SIZE] [--val_batch_size VAL_BATCH_SIZE] [--test_batch_size TEST_BATCH_SIZE] [--num_epochs NUM_EPOCHS]
@@ -262,7 +269,7 @@ Install all the required dependencies
     python3 evaluate_song_embedding.py --no_cuda --working_dir <ABS PATH>/deep_learning_project
     ```
     
-### 2.3 Inference
+### 2.5 Inference
 1. Change directory to `/src`
     ```
     cd src
@@ -271,3 +278,6 @@ Install all the required dependencies
     ```
     python3 inference.py --no_cuda --working_dir <ABS PATH>deep_learning_project
     ```
+3. Choose the song file via the GUI
+4. Close the window
+5. Song recommendations will be shown on your terminal!
