@@ -24,8 +24,8 @@ def main():
                                     criterion, optimizer, exp_lr_scheduler, num_epochs=configs.num_epochs,
                                     patience=configs.patience)    
 
-    plot_performance('Accuracy', accuracies)
-    plot_performance('Loss', losses)
+    plot_performance('Accuracy', accuracies, configs)
+    plot_performance('Loss', losses, configs)
 
 if __name__ == "__main__":
     try:

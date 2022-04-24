@@ -55,7 +55,7 @@ def create_model(configs):
         model = ResNet(ResidualBlock, [2, 2, 2], configs)
     elif configs.arch in ["rnn", "gru", "lstm"]:
         print(f"------Using RecurrentNet------")
-        model = RecurrentNet(input_size=221, hidden_dim=128, num_layers=1, output_size = 10, configs=configs, arch=configs.arch)
+        model = RecurrentNet(input_size=219, hidden_dim=256, num_layers=3, output_size = 10, configs=configs, arch=configs.arch)
     else:
         assert False, "Undefined Model Backbone"
 
