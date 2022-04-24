@@ -26,7 +26,9 @@ def extract_song_embed_from_model(model, dataloaders, configs):
             temp = outputs.cpu().detach().numpy()
             song_name += list(labels)
             for i in temp:
-                song_encoded.append(i/np.linalg.norm(i))
+                song_encoded.append(i/np.linalg.norm(i))  
+        
+        song_name = [i.split('/')[-1].split('.')[0] for i in song_name]
 
         return song_name, song_encoded
 
