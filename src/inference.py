@@ -17,7 +17,7 @@ def main():
     # dataloaders, _ = create_dataloaders(configs, df)
 
     model = create_model(configs).to(device=configs.device)
-    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights.pth"))
+    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights_best.pth", map_location=configs.device))
 
     path = f"{configs.dataset_dir}/prediction_sounds/jazz.00085.wav"
     song_spec = audio_to_spec(path, configs)

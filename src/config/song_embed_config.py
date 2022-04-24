@@ -12,6 +12,32 @@ def parse_eval_configs():
     ####################################################################
     ###################     Model configs     ##########################
     ####################################################################
+    parser.add_argument('--checkpoints_path', type=str, default=None,
+                            help='The path of the pretrained checkpoint')    
+    parser.add_argument('--test_size', type=float, default=0.2,
+                        help='Train test split ')
+    parser.add_argument('--num_workers', type=int, default=0,
+                            help='Number of threads for loading data')
+    parser.add_argument('--trg_batch_size', type=int, default=16,
+                            help='Batch size')
+    parser.add_argument('--val_batch_size', type=int, default=16,
+                            help='Batch size')
+    parser.add_argument('--test_batch_size', type=int, default=8,
+                            help='Batch size')
+    parser.add_argument('--num_epochs', type=int, default=25, 
+                        help='Number of epochs to train')
+    parser.add_argument('--lr', type=float, default=0.001, 
+                        help='Learning rate')
+    parser.add_argument('--momentum', type=float, default=0.9, 
+                        help='Momentum')
+    parser.add_argument('--gamma', type=float, default=0.1,
+                        help='Gamma')
+    parser.add_argument('--optimizer_type', type=str, default='sgd',
+                        help='Type of optimizer: sgd or adam')
+    parser.add_argument('--step_size', type=int, default=7,
+                        help='Step size')
+    parser.add_argument('--patience', type=int, default=5,
+                        help='Patience for early stopping')
     parser.add_argument('--no_cuda', action='store_true',
                         help='If true, cuda is not used.')
 

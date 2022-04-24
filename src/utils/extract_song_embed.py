@@ -19,6 +19,7 @@ def extract_song_embed_from_model(model, dataloaders, configs):
 
         # Iterate over data.
         for inputs, labels in dataloaders:
+            
             inputs = inputs.to(configs.device)
 
             outputs = model(inputs.float())
@@ -31,9 +32,9 @@ def extract_song_embed_from_model(model, dataloaders, configs):
 
     song_name, song_encoded = song_encoder(my_model)
     song_embed = np.array(song_encoded)
-    with open('checkpoints/song_embeddings/song_embed.pkl', 'wb') as f:
+    with open(f'{configs.checkpoints_dir}/song_embeddings/song_embed.pkl', 'wb') as f:
         pickle.dump(song_embed, f)
-    with open('checkpoints/song_embeddings/song_name.pkl', 'wb') as f:
+    with open(f'{configs.checkpoints_dir}/song_embeddings/song_name.pkl', 'wb') as f:
         pickle.dump(song_name, f)
 
     # return song_name, song_embed

@@ -102,6 +102,18 @@ def create_dataloaders(configs, df):
 
     return dataloaders, dataset_sizes
 
+def create_dataloaders_song_embedding(configs, df):
+
+    transformed_dataset = GenreDataset(csv_file=df,
+                                               transform=transforms.Compose([
+                                               PreProcessing()
+                                           ]))
+
+    dataloader = DataLoader(transformed_dataset, batch_size=configs.trg_batch_size,
+                        shuffle=False, num_workers=0)
+
+    return dataloader
+
 if __name__ == "__main__":
     configs = parse_train_configs()
     df = create_df(configs, "features_30_sec.csv")

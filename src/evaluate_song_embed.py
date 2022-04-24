@@ -6,10 +6,10 @@ from config.song_embed_config import parse_eval_configs
 from utils.eval_utils import eval_embed
 
 def main():
-    
-    with open('checkpoints/song_embeddings/song_embed.pkl', 'rb') as f:
+    configs = parse_eval_configs()
+    with open(f'{configs.checkpoints_dir}/song_embeddings/song_embed.pkl', 'rb') as f:
         song_embed = pickle.load(f)
-    with open('checkpoints/song_embeddings/song_name.pkl', 'rb') as f:
+    with open(f'{configs.checkpoints_dir}/song_embeddings/song_name.pkl', 'rb') as f:
         song_name = pickle.load(f)
 
     eval_embed(song_name, song_embed)

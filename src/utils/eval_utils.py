@@ -2,7 +2,7 @@ import torch
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 from models.CustomCNN import CustomCNN
-from inference_utils import songRecomendation
+import numpy as np
 
 def eval_model(model, dataloaders, configs):
 
@@ -18,7 +18,7 @@ def eval_model(model, dataloaders, configs):
         
         if configs.arch in ['rnn', 'gru', 'lstm']:
             # Reshape inputs to (batch_size, seq_length, input_size)
-            inputs = inputs.reshape(-1, 339, 221).to(device=configs.device)
+            inputs = inputs.reshape(-1, 338, 219).to(device=configs.device)
         else:
             inputs = inputs.to(device=configs.device)
 
@@ -59,8 +59,15 @@ def eval_embed(song_name, song_embed):
             dc_count[name] = 0
         dc_count[name] +=1
         dc[name] += (ans.count(name)-1)/5
-        score += ans.count(name)/5
+        score += (ans.count(name)-1)/5
     for i in dc.keys():
         print(i,dc[i]/dc_count[i])
     score = score/(len(song_name))
     print("average score :",score)
+
+def songRecomendation(song_name, song_embed, new_song, k=5):
+
+    ls = np.dot(song_embed, new_song/np.linalg.norm(new_song)) #normalize query and matrix mult
+    ls = sorted(range(len(ls)), key=lambda i: ls[i])[-k:]
+    ls = [song_name[i] for i in ls]
+    return ls

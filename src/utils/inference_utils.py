@@ -27,7 +27,7 @@ def inference(model, inputs, configs):
         
     if configs.arch in ['rnn', 'gru', 'lstm']:
         # Reshape inputs to (batch_size, seq_length, input_size)
-        inputs = inputs.reshape(-1, 339, 221).to(device=configs.device)
+        inputs = inputs.reshape(-1, 338, 219).to(device=configs.device)
     else:
         inputs = inputs.to(device=configs.device)
 
@@ -42,7 +42,7 @@ def upload_spec(path):
     image = cv2.imread(path, cv2.IMREAD_COLOR)
     print(f"Original image size: {image.shape}")
 
-    image = cv2.resize(image, (339,221))
+    image = cv2.resize(image, (338,219))
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     image = np.expand_dims(image, axis=-1)
     print(f"Reshaped image size: {image.shape}")
@@ -102,7 +102,7 @@ def songRecomendation(song_name, song_embed, new_song, model, configs, k=5):
 
     new_song = new_song.to(configs.device)
 
-    output = model(new_song.float())
+    output = model(new_song.float()).detach().numpy().T
 
     ls = np.dot(song_embed, output/np.linalg.norm(output)) #normalize query and matrix mult
     ls = sorted(range(len(ls)), key=lambda i: ls[i])[-k:]
