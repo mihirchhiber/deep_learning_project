@@ -15,7 +15,7 @@ def main():
 
     model = create_model(configs).to(device=configs.device)
     print(f"Weights path: {configs.checkpoints_dir}/{configs.arch}_weights_last.pth")
-    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights_last.pth"))
+    model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights_last.pth", map_location=configs.device))
 
     eval_model(model, dataloaders, configs)
 

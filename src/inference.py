@@ -9,6 +9,7 @@ import config.song_embed_config as se_config
 from utils.model_utils import create_model
 from utils.inference_utils import audio_to_spec, inference, upload_spec, songRecomendation
 from utils.preprocessing_utils import create_df
+from gui import Gui
 
 def main(inp):
     configs = parse_eval_configs()
@@ -38,11 +39,12 @@ def main(inp):
 
 if __name__ == "__main__":
     try:
-        a = "prediction_sounds/jazz.00085.wav"
-        print("####### Music Recommender System #######")
-        print("Key in the absolute file path for the song")
-        print("Eg. /home/Desktop/jazz.00085.wav")
-        inp = input("Path: ")
-        main(inp)
+        # print("####### Music Recommender System #######")
+        # print("Key in the absolute file path for the song")
+        # print("Eg. /home/Desktop/data/prediction_sounds/jazz.00085.wav")
+        # inp = input("Path: ")
+        # print()
+        gui = Gui()
+        main(gui.filepath)
     except KeyboardInterrupt:
         sys.exit(0)

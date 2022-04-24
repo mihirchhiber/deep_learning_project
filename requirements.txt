@@ -8,3 +8,5 @@ tqdm
 time
 matplotlib
 numba
+easydict
+tk
