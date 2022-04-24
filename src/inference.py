@@ -7,7 +7,7 @@ from utils.model_utils import create_model
 from utils.inference_utils import audio_to_spec, inference, upload_spec
 from utils.preprocessing_utils import create_df, create_dataloaders
 
-def main():
+def main(inp):
     configs = parse_eval_configs()
     df = create_df(configs, "features_30_sec.csv")
     print(df)
@@ -16,7 +16,7 @@ def main():
     model = create_model(configs).to(device=configs.device)
     model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights.pth"))
 
-    path = f"{configs.dataset_dir}/prediction_sounds/jazz.00085.wav"
+    path = f"{inp}"
     song_spec = audio_to_spec(path, configs)
     inputs = upload_spec(f"{configs.dataset_dir}/prediction/{song_spec}")
 
@@ -24,6 +24,11 @@ def main():
 
 if __name__ == "__main__":
     try:
-        main()
+        a = "prediction_sounds/jazz.00085.wav"
+        print("####### Music Recommender System #######")
+        print("Key in the absolute file path for the song")
+        print("Eg. /home/Desktop/jazz.00085.wav")
+        inp = input("Path: ")
+        main(inp)
     except KeyboardInterrupt:
         sys.exit(0)
