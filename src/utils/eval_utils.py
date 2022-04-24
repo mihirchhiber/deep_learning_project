@@ -16,7 +16,7 @@ def eval_model(model, dataloaders, configs):
         
         if configs.arch in ['rnn', 'gru', 'lstm']:
             # Reshape inputs to (batch_size, seq_length, input_size)
-            inputs = inputs.reshape(-1, 339, 221).to(device=configs.device)
+            inputs = inputs.reshape(-1, 338, 219).to(device=configs.device)
         else:
             inputs = inputs.to(device=configs.device)
 
