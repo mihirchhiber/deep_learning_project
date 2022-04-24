@@ -3,7 +3,14 @@
 ## 1. Getting Started
 ### 1.1 Dataset preparation
 1. Download the [GTZAN Dataset](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) 
-2. Directory structure should be as such:
+2. Visualize an individual audio file
+
+-Spectral Centroid:
+![Test Image 1](https://github.com/mihirchhiber/deep_learning_project/blob/main/img/spectral%20centroid%20of%20blue1.png)
+
+-Sound Wave:
+![Test Image 2](https://github.com/mihirchhiber/deep_learning_project/blob/main/img/sound%20wave%20of%20blue1.png)
+3. Directory structure should be as such:
 
     ```
     .
