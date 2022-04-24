@@ -111,6 +111,50 @@ def create_dataloaders(configs, df):
 
     return dataloaders, dataset_sizes
 
+class GenreDataset_embed(Dataset):
+    """Genre dataset."""
+
+    def __init__(self, csv_file, transform=None):
+        """
+        Args:
+            csv_file (string): Path to the csv file with annotations.
+            transform (callable, optional): Optional transform to be applied
+                on a sample.
+        """
+        self.csv = csv_file
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.csv)
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        img_name = self.csv.iloc[idx, 0]
+        image = cv2.imread(img_name,cv2.IMREAD_COLOR)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        image = np.expand_dims(image, axis=-1)
+        details = self.csv.iloc[idx, 1:]
+        sample = {'image': image, 'label': img_name}
+
+        if self.transform:
+            sample = self.transform(sample)
+
+        return sample
+
+def create_dataloaders_song_embedding(configs, df):
+
+    transformed_dataset = GenreDataset_embed(csv_file=df,
+                                               transform=transforms.Compose([
+                                               PreProcessing()
+                                           ]))
+
+    dataloader = DataLoader(transformed_dataset, batch_size=configs.trg_batch_size,
+                        shuffle=False, num_workers=0)
+
+    return dataloader
+
 if __name__ == "__main__":
     configs = parse_train_configs()
     df = create_df(configs, "features_30_sec.csv")

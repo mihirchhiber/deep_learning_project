@@ -27,7 +27,7 @@ def inference(model, inputs, configs):
         
     if configs.arch in ['rnn', 'gru', 'lstm']:
         # Reshape inputs to (batch_size, seq_length, input_size)
-        inputs = inputs.reshape(-1, 339, 221).to(device=configs.device)
+        inputs = inputs.reshape(-1, 338, 219).to(device=configs.device)
     else:
         inputs = inputs.to(device=configs.device)
 
@@ -42,14 +42,14 @@ def upload_spec(path):
     image = cv2.imread(path, cv2.IMREAD_COLOR)
     print(f"Original image size: {image.shape}")
 
-    image = cv2.resize(image, (339,221))
+    image = cv2.resize(image, (338,219))
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     image = np.expand_dims(image, axis=-1)
     print(f"Reshaped image size: {image.shape}")
 
     inputs = np.transpose(image, (2,0,1))
     inputs = np.expand_dims(inputs, axis=0)
-    inputs = torch.from_numpy(inputs)
+    inputs = torch.Tensor(inputs)
     
     return inputs
 
@@ -86,10 +86,29 @@ def audio_to_spec(path, configs):
     librosa.display.specshow(power_to_db, sr=sr, x_axis='time', y_axis='mel', cmap='magma')
 
     plt.axis('off')
-    plt.savefig(f"{configs.dataset_dir}/prediction/{songname}_mspec.png", bbox_inches='tight', transparent=True, pad_inches=0)
+    plt.savefig(f"{configs.dataset_dir}/prediction_mspec/{songname}_mspec.png", bbox_inches='tight', transparent=True, pad_inches=0)
     # plt.colorbar(label='dB')
     # plt.title('Mel-Spectrogram (dB)', fontdict=dict(size=18))
     # plt.xlabel('Time', fontdict=dict(size=15))
     # plt.ylabel('Frequency', fontdict=dict(size=15))
     # plt.show()
     return f"{songname}_mspec.png"
+
+def songRecomendation(song_name, song_embed, new_song, model, configs, k=5):
+
+    model.eval() # Set model to evaluate mode
+
+    model = torch.nn.Sequential(*(list(model.modules())[1:])[0]) # strips off last linear layer and dropout layer
+
+    new_song = new_song.to(configs.device)
+
+    output = model(new_song.float()).detach().numpy().T
+
+    ls = np.dot(song_embed, output/np.linalg.norm(output)) #normalize query and matrix mult
+    ls = sorted(range(len(ls)), key=lambda i: ls[i])[-k:]
+
+    print("The suggested songs are : ")
+    ls = [song_name[i] for i in ls]
+    for i in range(len(ls)):
+        print(str(i) + ') ' + ls[i])
+    return ls

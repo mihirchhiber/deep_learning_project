@@ -11,7 +11,7 @@ def create_model(configs):
     # Create model based on architecture name
     if configs.arch == "cnn":
         print(f"------Using CNN------")
-        model = CustomCNN(configs)
+        model = CustomCNN()
     elif configs.arch == "incp":
         print(f"------Using InceptionModule------")
         # # Trial 1: only 1 Inception module
