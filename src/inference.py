@@ -19,16 +19,13 @@ def main():
     model = create_model(configs).to(device=configs.device)
     model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights_best.pth", map_location=configs.device))
 
-    path = f"{configs.dataset_dir}/prediction_sounds/jazz.00085.wav"
+    path = f"{configs.dataset_dir}/prediction_sounds/classical.wav"
     song_spec = audio_to_spec(path, configs)
     inputs = upload_spec(f"{configs.dataset_dir}/prediction_mspec/{song_spec}")
 
     genre = inference(model, inputs, configs)
 
     configs = se_config.parse_eval_configs()
-
-    # model = create_model(configs).to(device=configs.device)
-    # model.load_state_dict(torch.load(f"{configs.checkpoints_dir}/{configs.arch}_weights.pth"))
 
     with open(f'{configs.checkpoints_dir}/song_embeddings/song_embed.pkl', 'rb') as f:
         song_embed = pickle.load(f)
