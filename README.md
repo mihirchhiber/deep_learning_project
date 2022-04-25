@@ -258,7 +258,7 @@ Install all the required dependencies
     --no_cuda             If true, cuda is not used.
     ```
 
-### 2.4 Evaluation of model
+### 2.4 Evaluation of song embedding
 1. Change directory to `/src`
     ```
     cd src
